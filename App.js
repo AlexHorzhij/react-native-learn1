@@ -27,28 +27,10 @@ export default function App() {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    // alignItems: 'center',
     justifyContent: 'center',
   },
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
-    // alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
-  // loginContainer: {
-  //   // flex: 1,
-  //   width: 375,
-  //   backgroundColor: '#FFFFFF',
-  //   // alignContent: 'flex-end',
-  // },
-  // formContainer: {
-  //   marginHorizontal: 16,
-  // },
-  // input: {
-  //   backgroundColor: '#F6F6F6',
-  //   borderColor: '#E8E8E8',
-  //   borderWidth: 1,
-  //   borderRadius: 8,
-  // },
 });

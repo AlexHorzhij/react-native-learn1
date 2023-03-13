@@ -18,7 +18,7 @@ const initialState = {
   password: '',
 };
 
-export const RegistrationScreen = () => {
+export const RegistrationScreen = ({ navigation }) => {
   const [state, setState] = useState(initialState);
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
 
@@ -95,7 +95,12 @@ export const RegistrationScreen = () => {
               <TouchableOpacity style={styles.button} onPress={submitForm}>
                 <Text style={styles.buttonText}>Sign in</Text>
               </TouchableOpacity>
-              <Text style={styles.linkText}>Do you have account? Sing in!</Text>
+              <Text style={styles.linkText}>
+                Do you have account?
+                <Text onPress={() => navigation.navigate('Login')}>
+                  Sing in!
+                </Text>
+              </Text>
             </View>
           </KeyboardAvoidingView>
         </View>

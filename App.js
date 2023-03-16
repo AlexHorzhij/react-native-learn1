@@ -1,13 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { LoginScreen } from './Screens/LoginScreen';
-import { RegistrationScreen } from './Screens/RegistrationScreen';
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { StyleSheet, View } from 'react-native';
-
-const Stack = createNativeStackNavigator();
+import useRouter from './router';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -16,21 +11,12 @@ export default function App() {
     'Roboto-Regular': require('./assets/fonts/Roboto-Bold.ttf'),
   });
 
+  const routing = useRouter(true);
+
   return (
-    <View style={styles.container}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Registration" component={RegistrationScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+    <NavigationContainer>
+      {routing}
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

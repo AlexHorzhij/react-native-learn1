@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-
 import {
   StyleSheet,
   TextInput,
@@ -11,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from 'react-native';
+import { SubmitButton } from '../../components';
 
 const initialState = {
   login: '',
@@ -43,7 +43,9 @@ export default function LoginScreen({ navigation }) {
   };
 
   const submitForm = () => {
+    console.log(state);
     keyboardVisibleHandler(false);
+    setState(initialState);
   };
 
   return (
@@ -83,9 +85,13 @@ export default function LoginScreen({ navigation }) {
                   }
                   onFocus={() => keyboardVisibleHandler(true)}
                 />
-                <TouchableOpacity style={styles.button} onPress={submitForm}>
-                  <Text style={styles.buttonText}>Sign in</Text>
-                </TouchableOpacity>
+                <SubmitButton
+                  onPress={submitForm}
+                  text={'Sign in'}
+                  bgColor={'#FF6C00'}
+                  textColor={'#fff'}
+                  style={{ marginBottom: 16 }}
+                />
                 <Text
                   style={styles.linkText}
                   onPress={() => navigation.navigate('RegistrationScreen')}

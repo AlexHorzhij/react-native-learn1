@@ -1,11 +1,28 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { userFoto } from '../../assets/images/tempFoto/user.jpg';
+import PublicationItem from '../../components/publicationScreenComponents/PublicationItem';
+import image from '../../assets/images/tempFoto/forest.jpg';
 
 const user = {
   userAvatar: '../../assets/images/tempFoto/user.jpg',
   userName: 'Natali Romanova',
   userEmail: 'email@example.com',
 };
+const data = [
+  {
+    id: '1',
+    title: 'Forest',
+    commentsCount: 0,
+    location: "Ivano-Frankivs'k Region, Ukraine",
+    image,
+  },
+  {
+    id: '2',
+    title: 'Forest',
+    commentsCount: 0,
+    location: "Ivano-Frankivs'k Region, Ukraine",
+    image,
+  },
+];
 
 export default function PublicationScreeen() {
   return (
@@ -20,6 +37,11 @@ export default function PublicationScreeen() {
           <Text>{user.userEmail}</Text>
         </View>
       </View>
+      {data.map(item => (
+        <View key={item.id} style={{ marginBottom: 32 }}>
+          <PublicationItem data={item} />
+        </View>
+      ))}
     </View>
   );
 }

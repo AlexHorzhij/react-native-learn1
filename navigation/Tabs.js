@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, Feather, AntDesign } from '@expo/vector-icons';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   PublicationScreen,
   AddPublicationScreen,
@@ -9,7 +9,7 @@ import {
 
 const Tab = createBottomTabNavigator();
 
-export const Tabs = () => {
+export const Tabs = ({ navigation }) => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -61,9 +61,12 @@ export const Tabs = () => {
         component={AddPublicationScreen}
         options={{
           tabBarIcon: (focused, color, size) => (
-            <View style={styles.addButton}>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => navigation.navigate('AddPublicationScreen')}
+            >
               <AntDesign name="plus" size={24} color="#fff" />
-            </View>
+            </TouchableOpacity>
           ),
         }}
       />

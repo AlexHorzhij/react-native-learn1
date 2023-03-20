@@ -84,7 +84,6 @@ export default function AddPublicationScreen() {
     </TouchableWithoutFeedback>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
@@ -99,6 +98,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   camera: {
+    width: '100%',
     height: 240,
     borderRadius: 8,
     borderColor: '#E8E8E8',

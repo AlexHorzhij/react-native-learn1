@@ -20,12 +20,12 @@ export const Tabs = ({ navigation }) => {
         },
         headerTitleAlign: 'center',
         headerStyle: {
-          shadowColor: '#000',
+          shadowColor: 'rgba(0, 0, 0, 0.25)',
           elevation: 5,
           shadowOffset: {
             height: 0.5,
           },
-          shadowRadius: 14,
+          // shadowRadius: 14,
         },
         tabBarShowLabel: false,
         tabBarStyle: {
@@ -74,6 +74,7 @@ export const Tabs = ({ navigation }) => {
         name="User"
         component={UserScreen}
         options={{
+          headerShown: false,
           tabBarIcon: (focused, color, size) => (
             <Feather name="user" size={24} color="black" />
           ),

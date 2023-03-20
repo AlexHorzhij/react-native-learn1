@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import PublicationItem from '../../components/publicationScreenComponents/PublicationItem';
 import image from '../../assets/images/tempFoto/forest.jpg';
 
@@ -27,21 +27,23 @@ const data = [
 export default function PublicationScreeen() {
   return (
     <View style={styles.screenContainer}>
-      <View style={styles.container}>
-        <Image
-          source={require('../../assets/images/tempFoto/user.jpg')}
-          style={styles.image}
-        />
-        <View>
-          <Text style={styles.name}>{user.userName}</Text>
-          <Text>{user.userEmail}</Text>
+      <ScrollView>
+        <View style={styles.container}>
+          <Image
+            source={require('../../assets/images/tempFoto/user.jpg')}
+            style={styles.image}
+          />
+          <View>
+            <Text style={styles.name}>{user.userName}</Text>
+            <Text>{user.userEmail}</Text>
+          </View>
         </View>
-      </View>
-      {data.map(item => (
-        <View key={item.id} style={{ marginBottom: 32 }}>
-          <PublicationItem data={item} />
-        </View>
-      ))}
+        {data.map(item => (
+          <View key={item.id} style={{ marginBottom: 32 }}>
+            <PublicationItem data={item} />
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 }

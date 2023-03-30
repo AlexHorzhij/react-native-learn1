@@ -12,7 +12,7 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import user from '../../assets/images/tempFoto/user.jpg';
 import PublicationCard from '../../components/userScreenComponents/PublicationCard';
 import gallery from '../../assets/dataBase/gallery';
-import image1 from '../../assets/images/tempFoto/forest.jpg';
+import { useLogout } from '../../services/hooks/useLogout';
 
 const userData = {
   name: 'Natali Romanova',
@@ -24,18 +24,20 @@ const data = [
     title: 'Forest',
     commentsCount: 0,
     location: "Ivano-Frankivs'k Region, Ukraine",
-    image: image1,
+    image: '../../assets/images/tempFoto/forest.jpg',
   },
   {
     id: '2',
     title: 'Forest',
     commentsCount: 0,
     location: "Ivano-Frankivs'k Region, Ukraine",
-    image: image1,
+    image: '../../assets/images/tempFoto/forest.jpg',
   },
 ];
 
 export default function UserScreen() {
+  const logout = useLogout();
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -43,29 +45,29 @@ export default function UserScreen() {
         resizeMode={'cover'}
         source={require('../../assets/images/backgroundFoto.jpg')}
       >
-        {/* <ScrollView> */}
-        <View style={styles.userContainer}>
-          <View style={styles.avatarContainer}>
-            <Image style={styles.avatar} source={userData.avatar} />
+        <ScrollView>
+          <View style={styles.userContainer}>
+            <View style={styles.avatarContainer}>
+              <Image style={styles.avatar} source={userData.avatar} />
 
-            <TouchableOpacity
-              activeOpacity={0.6}
-              style={styles.avatarDeleteBtnContainer}
-            >
-              <Ionicons name="close-outline" size={24} color="#BDBDBD" />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity style={styles.logoutIcon}>
-            <MaterialIcons name="logout" size={24} color="#BDBDBD" />
-          </TouchableOpacity>
-          <Text style={styles.name}>{userData.name}</Text>
-          {data.map(item => (
-            <View key={item.id}>
-              <PublicationCard data={item} />
+              <TouchableOpacity
+                activeOpacity={0.6}
+                style={styles.avatarDeleteBtnContainer}
+              >
+                <Ionicons name="close-outline" size={24} color="#BDBDBD" />
+              </TouchableOpacity>
             </View>
-          ))}
-        </View>
-        {/* </ScrollView> */}
+            <TouchableOpacity style={styles.logoutIcon} onPress={logout}>
+              <MaterialIcons name="logout" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+            <Text style={styles.name}>{userData.name}</Text>
+            {gallery.map(item => (
+              <View key={item.id} style={{ width: '100%' }}>
+                <PublicationCard data={item} />
+              </View>
+            ))}
+          </View>
+        </ScrollView>
       </ImageBackground>
     </View>
   );
@@ -75,25 +77,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  title: {
-    fontFamily: 'Roboto',
-    alignSelf: 'center',
-    fontWeight: '500',
-    fontSize: 30,
-    marginBottom: 32,
-  },
   background: {
     flex: 1,
   },
   userContainer: {
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    flex: 1,
+    paddingHorizontal: 20,
     top: 145,
     left: 0,
-    zIndex: 10,
+    marginBottom: 145,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: '#FFFFFF',
@@ -130,6 +121,7 @@ const styles = StyleSheet.create({
     right: 16,
   },
   name: {
+    alignSelf: 'center',
     marginTop: 92,
     marginBottom: 35,
     fontWeight: '500',

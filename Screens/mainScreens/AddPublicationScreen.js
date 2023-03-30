@@ -7,17 +7,21 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
-  ScrollView,
+  ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import { Camera, CameraType } from 'expo-camera';
+import { SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
 import {
   InputUnderlineIcon,
   SubmitButton,
   DeleteBottomButton,
 } from '../../components';
 
-export default function AddPublicationScreen() {
+export default function AddPublicationScreen({ navigation, route }) {
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
+  const foto = route.params?.foto ? route.params.foto : null;
+
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setIsOpenKeyboard(true);
@@ -43,7 +47,14 @@ export default function AddPublicationScreen() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.cameraContainer}>
-          <View style={styles.camera}></View>
+          <ImageBackground style={styles.image} source={{ uri: foto }}>
+            <TouchableOpacity
+              style={styles.makeFotoBtn}
+              onPress={() => navigation.navigate('CameraScreen')}
+            >
+              <FontAwesome name="camera" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          </ImageBackground>
           <Text style={styles.cameraText}>Load foto</Text>
         </View>
 
@@ -97,13 +108,24 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     width: '100%',
   },
-  camera: {
+  image: {
     width: '100%',
     height: 240,
     borderRadius: 8,
     borderColor: '#E8E8E8',
     borderWidth: 1,
     marginBottom: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#E8E8E8',
+  },
+  makeFotoBtn: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   cameraText: {
     fontWeight: '400',

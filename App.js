@@ -1,8 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
-
-import useRouter from './router';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+import ScreensWrapper from './Screens/ScreensWrapper';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -11,12 +11,11 @@ export default function App() {
     'Roboto-Regular': require('./assets/fonts/Roboto-Bold.ttf'),
   });
 
-  const routing = useRouter(true);
-
   return (
-    <NavigationContainer>
-      {routing}
-      <StatusBar style="auto" />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <ScreensWrapper />
+      </NavigationContainer>
+    </Provider>
   );
 }

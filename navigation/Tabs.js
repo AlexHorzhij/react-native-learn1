@@ -25,7 +25,6 @@ export const Tabs = ({ navigation }) => {
           shadowOffset: {
             height: 0.5,
           },
-          // shadowRadius: 14,
         },
         tabBarShowLabel: false,
         tabBarStyle: {
@@ -33,12 +32,6 @@ export const Tabs = ({ navigation }) => {
           alignItems: 'center',
           paddingVertical: 9,
           height: 60,
-          // shadowColor: '#000',
-          // elevation: 5,
-          // shadowOffset: {
-          //   height: -0.5,
-          // },
-          // shadowRadius: 14,
         },
         tabBarItemStyle: {
           height: 40,

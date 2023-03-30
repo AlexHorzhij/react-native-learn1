@@ -2,7 +2,7 @@ const gallery = [
   {
     createdAt: '2023-03-20T09:26:53.870Z',
     title: 'title 1',
-    comments: [],
+    comments: [4, 8],
     like: 98,
     location: 'China',
     url: 'https://loremflickr.com/640/480',
@@ -11,7 +11,7 @@ const gallery = [
   {
     createdAt: '2023-03-20T11:51:15.343Z',
     title: 'title 2',
-    comments: [],
+    comments: [1, 2, 3],
     like: 8,
     location: 'Saint Martin',
     url: 'https://loremflickr.com/640/480',

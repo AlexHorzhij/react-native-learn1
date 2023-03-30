@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { signUp } from '../../redux/auth/authOperations';
 import {
   StyleSheet,
   TextInput,
@@ -21,6 +23,7 @@ const initialState = {
 export default function RegistrationScreen({ navigation }) {
   const [state, setState] = useState(initialState);
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -44,7 +47,7 @@ export default function RegistrationScreen({ navigation }) {
   };
 
   const submitForm = () => {
-    console.log(state);
+    dispatch(signUp(state));
     keyboardVisibleHandler(false);
     setState(initialState);
   };

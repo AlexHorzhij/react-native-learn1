@@ -3,8 +3,7 @@
     "name": "rn-learn-1",
     "slug": "rn-learn-1",
     "version": "1.0.0",
-    "jsEngine": "hermes",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {

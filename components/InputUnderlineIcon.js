@@ -1,18 +1,23 @@
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function InputUnderlineIcon({
   icon,
   placeholder,
   style,
   onFocus,
+  onChange,
+  onIconPress,
 }) {
   return (
     <View style={{ ...styles.inputContainer, ...style }}>
-      {icon}
+      {icon && (
+        <TouchableOpacity onPress={onIconPress}>{icon}</TouchableOpacity>
+      )}
       <TextInput
         placeholder={placeholder}
         style={styles.inputText}
         onFocus={onFocus}
+        onChange={onChange}
       />
     </View>
   );
@@ -37,5 +42,9 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     placeholderTextColor: '#BDBDBD',
     color: '#212121',
+  },
+  iconButton: {
+    height: '100%',
+    paddingHorizontal: 10,
   },
 });

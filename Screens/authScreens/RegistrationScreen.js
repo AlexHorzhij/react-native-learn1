@@ -16,7 +16,7 @@ import { SubmitButton } from '../../components';
 
 const initialState = {
   name: '',
-  login: '',
+  email: '',
   password: '',
 };
 
@@ -83,9 +83,9 @@ export default function RegistrationScreen({ navigation }) {
                 <TextInput
                   style={{ ...styles.input, marginBottom: 16 }}
                   placeholder={'Login'}
-                  value={state.login}
+                  value={state.email}
                   onChangeText={value =>
-                    setState(prev => ({ ...prev, login: value }))
+                    setState(prev => ({ ...prev, email: value }))
                   }
                   onFocus={() => keyboardVisibleHandler(true)}
                 />

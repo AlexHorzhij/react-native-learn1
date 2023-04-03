@@ -3,6 +3,7 @@ import AddPublicationScreen from './AddPublicationScreen';
 import UserScreen from './UserScreen';
 import CameraScreen from './CameraScreen';
 import FotoPreview from './FotoPreview';
+import MapScreen from './MapScreen';
 
 export {
   PublicationScreen,
@@ -10,4 +11,5 @@ export {
   UserScreen,
   CameraScreen,
   FotoPreview,
+  MapScreen,
 };

@@ -2,37 +2,58 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../api/API';
 
 export const signUp = createAsyncThunk(
-  'auth/signUp',
-  async (data, thunkAPI) => {
+  'signUp',
+  async (data, { rejectWithValue }) => {
     try {
       const response = await API.userSignUp(data);
-      console.log('response1', response);
       return response;
     } catch (error) {
       console.error(error);
+      return rejectWithValue(error);
     }
   }
 );
+
+// export const registerUser = createAsyncThunk(
+//   'register',
+//   async (data, { rejectWithValue }) => {
+//     try {
+//       const user = await register(data);
+//       toast.success('Successfully registered!');
+//       return user;
+//     } catch ({ response }) {
+//       const error = {
+//         status: response.status,
+//         message: response.data.message,
+//       };
+//       toast.error(`Oops! ${response.data.message}, please, try again`);
+//       return rejectWithValue(error);
+//     }
+//   }
+// );
 
 export const signIn = createAsyncThunk(
-  'auth/signIn',
-  async (data, thunkAPI) => {
+  'signIn',
+  async (data, { rejectWithValue }) => {
     try {
       const response = await API.userSignIn(data);
-      console.log('responseUserSignIn', response);
       return response;
     } catch (error) {
       console.error(error);
+      return rejectWithValue(error);
     }
   }
 );
 
-export const signOut = createAsyncThunk('auth/signOut', async (_, thunkAPI) => {
-  try {
-    console.log('response: ', 'logout');
-    const response = await API.userSignOut();
-    return response;
-  } catch (error) {
-    console.error(error);
+export const signOut = createAsyncThunk(
+  'signOut',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await API.userSignOut();
+      return response;
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue(error);
+    }
   }
-});
+);

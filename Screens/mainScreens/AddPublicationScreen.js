@@ -10,7 +10,6 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import { Camera, CameraType } from 'expo-camera';
 import { SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
 import {
   InputUnderlineIcon,
@@ -18,11 +17,32 @@ import {
   DeleteBottomButton,
 } from '../../components';
 
+import * as Location from 'expo-location';
+
+const postData = {
+  title: '',
+  comments: [],
+  likes: 0,
+  location: { latitude: 0, longitude: 0 },
+  image: '',
+  owner: '',
+};
+
 export default function AddPublicationScreen({ navigation, route }) {
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
+  const [post, setPost] = useState(postData);
+  const [coord, setCoord] = useState(postData.location);
   const foto = route.params?.foto ? route.params.foto : null;
 
   useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+    })();
+
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setIsOpenKeyboard(true);
     });
@@ -42,6 +62,25 @@ export default function AddPublicationScreen({ navigation, route }) {
       Keyboard.dismiss();
     }
   };
+
+  const getLocation = async () => {
+    const { coords } = await Location.getCurrentPositionAsync();
+    const location = { latitude: coords.latitude, longitude: coords.longitude };
+    console.log('location: ', location);
+    setCoord(location);
+    navigation.navigate('MapScreen', { location });
+  };
+
+  const getAddressFromCoords = async coord => {
+    console.log('coord: ', coord);
+    const address = await Location.reverseGeocodeAsync(coord);
+    console.log('address: ', address);
+  };
+
+  useEffect(() => {
+    getAddressFromCoords(coord);
+  }, [coord]);
+  const publishPost = () => {};
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -69,8 +108,14 @@ export default function AddPublicationScreen({ navigation, route }) {
               placeholder="Title..."
               style={{ marginBottom: 16 }}
               onFocus={() => keyboardVisibleHandler(true)}
+              onChange={value =>
+                setPost(prev => {
+                  return { ...prev, title: value };
+                })
+              }
             />
             <InputUnderlineIcon
+              onIconPress={getLocation}
               icon={
                 <SimpleLineIcons
                   name="location-pin"
@@ -83,7 +128,7 @@ export default function AddPublicationScreen({ navigation, route }) {
               onFocus={() => keyboardVisibleHandler(true)}
             />
           </KeyboardAvoidingView>
-          <SubmitButton text={'Publish'} />
+          <SubmitButton text={'Publish'} onPress={publishPost} />
         </View>
         <DeleteBottomButton
           style={{

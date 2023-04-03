@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   title: {
+    // fontFamily: 'RobotoBold',
     fontWeight: '500',
     fontSize: 16,
     lineHeight: 19,

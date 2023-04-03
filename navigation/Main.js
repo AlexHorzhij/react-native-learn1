@@ -5,6 +5,7 @@ import {
   AddPublicationScreen,
   CameraScreen,
   FotoPreview,
+  MapScreen,
 } from '../Screens/mainScreens';
 import { TouchableOpacity, TouchableOpacityComponent } from 'react-native';
 
@@ -28,6 +29,13 @@ export const Main = () => {
               <MaterialIcons name="logout" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           ),
+        }}
+      />
+      <MainStack.Screen
+        name="MapScreen"
+        component={MapScreen}
+        options={{
+          title: 'Location',
         }}
       />
       <MainStack.Screen

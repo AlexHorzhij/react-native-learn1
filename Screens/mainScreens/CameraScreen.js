@@ -9,6 +9,7 @@ import {
   View,
   Alert,
 } from 'react-native';
+import API from '../../api/API';
 
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -21,6 +22,13 @@ export default function CameraScreen({ navigation }) {
   const takeFoto = async () => {
     const foto = await camera.takePictureAsync();
     setFoto(foto.uri);
+  };
+
+  const saveFoto = async () => {
+    const res = await fetch(foto);
+    const file = await res.blob();
+    console.log(file);
+    API.saveInStorage(file);
   };
 
   useEffect(() => {
@@ -61,7 +69,10 @@ export default function CameraScreen({ navigation }) {
       <View style={styles.btnContainer}>
         <TouchableOpacity
           style={styles.publishBtn}
-          onPress={() => navigation.navigate('AddPublicationScreen', { foto })}
+          onPress={() => {
+            navigation.navigate('AddPublicationScreen', { foto });
+            saveFoto();
+          }}
         >
           <Text style={styles.publishText}>SAVE</Text>
         </TouchableOpacity>

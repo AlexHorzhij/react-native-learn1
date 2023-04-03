@@ -15,7 +15,7 @@ import {
 import { SubmitButton } from '../../components';
 
 const initialState = {
-  login: '',
+  email: '',
   password: '',
 };
 
@@ -47,6 +47,7 @@ export default function LoginScreen({ navigation }) {
 
   const submitForm = () => {
     dispatch(signIn(state));
+
     keyboardVisibleHandler(false);
     setState(initialState);
   };
@@ -73,9 +74,9 @@ export default function LoginScreen({ navigation }) {
                 <TextInput
                   style={{ ...styles.input, marginBottom: 16 }}
                   placeholder={'Login'}
-                  value={state.login}
+                  value={state.email}
                   onChangeText={value =>
-                    setState(prev => ({ ...prev, login: value }))
+                    setState(prev => ({ ...prev, email: value }))
                   }
                   onFocus={() => keyboardVisibleHandler(true)}
                 />

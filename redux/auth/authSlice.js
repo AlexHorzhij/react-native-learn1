@@ -3,7 +3,7 @@ import { signUp, signIn, signOut } from './authOperations';
 
 const initialState = {
   name: null,
-  login: null,
+  email: null,
   isLoading: null,
   token: null,
   error: null,
@@ -15,16 +15,9 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     refreshUser: (state, { payload }) => {
-      console.log('payload: ', payload);
       state.uid = payload.uid;
-      state.login = payload.login;
-      state.token = payload.token;
-    },
-    logOut: state => {
-      state.isLoading = false;
-      state.login = null;
-      state.token = null;
-      state.uid = null;
+      state.email = payload.email;
+      state.name = payload.displayName;
     },
   },
   extraReducers: builder => {
@@ -33,10 +26,9 @@ export const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(signUp.fulfilled, (state, { payload }) => {
-        console.log('payload', payload);
         state.isLoading = false;
-        state.login = payload.login;
-        state.token = payload.accessToken;
+        state.email = payload.email;
+        state.name = payload.displayName;
         state.uid = payload.uid;
       })
       .addCase(signUp.rejected, state => {
@@ -46,10 +38,9 @@ export const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(signIn.fulfilled, (state, { payload }) => {
-        console.log('payload_signIn', payload);
         state.isLoading = false;
-        state.login = payload.login;
-        state.token = payload.accessToken;
+        state.email = payload.email;
+        state.name = payload.displayName;
         state.uid = payload.uid;
       })
       .addCase(signIn.rejected, state => {
@@ -58,9 +49,11 @@ export const authSlice = createSlice({
       .addCase(signOut.pending, state => {
         state.isLoading = true;
       })
-      .addCase(signOut.fulfilled, (state, { payload }) => {
-        console.log('payload', payload);
-        state = initialState;
+      .addCase(signOut.fulfilled, state => {
+        state.isLoading = false;
+        state.uid = null;
+        state.email = null;
+        state.name = null;
       })
       .addCase(signOut.rejected, state => {
         state.error = true;
@@ -68,20 +61,4 @@ export const authSlice = createSlice({
   },
 });
 
-export const { refreshUser, logOut } = authSlice.actions;
-
-// import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-// export const authApi = createApi({
-//   reducerPath: 'authApi',
-//   baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
-//   endpoints: builder => ({
-//     getPokemonByName: builder.query({
-//       query: name => `auth/${name}`,
-//     }),
-//   }),
-// });
-
-// // Export hooks for usage in functional components, which are
-// // auto-generated based on the defined endpoints
-// export const { useGetPokemonByNameQuery } = pokemonApi;
+export const { logOut, refreshUser } = authSlice.actions;

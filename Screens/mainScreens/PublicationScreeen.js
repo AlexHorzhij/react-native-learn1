@@ -1,45 +1,51 @@
+import { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUserAuth } from '../../redux/auth/authSelector';
 import PublicationItem from '../../components/publicationScreenComponents/PublicationItem';
-import image from '../../assets/images/tempFoto/forest.jpg';
+// import image from '../../assets/images/tempFoto/forest.jpg';
+import { getAllPosts } from '../../redux/posts/postsSelector';
+import { getPosts } from '../../redux/posts/postsOperations';
 
-const user = {
-  userAvatar: '../../assets/images/tempFoto/user.jpg',
-  userName: 'Natali Romanova',
-  userEmail: 'email@example.com',
-};
-const data = [
-  {
-    id: '1',
-    title: 'Forest',
-    commentsCount: 0,
-    location: "Ivano-Frankivs'k Region, Ukraine",
-    image,
-  },
-  {
-    id: '2',
-    title: 'Forest',
-    commentsCount: 0,
-    location: "Ivano-Frankivs'k Region, Ukraine",
-    image,
-  },
-];
+// const user = '../../assets/images/tempFoto/user.jpg';
+// const data = [
+//   {
+//     id: '1',
+//     title: 'Forest',
+//     commentsCount: 0,
+//     location: "Ivano-Frankivs'k Region, Ukraine",
+//     image,
+//   },
+//   {
+//     id: '2',
+//     title: 'Forest',
+//     commentsCount: 0,
+//     location: "Ivano-Frankivs'k Region, Ukraine",
+//     image,
+//   },
+// ];
 
 export default function PublicationScreeen() {
+  const { posts } = useSelector(getAllPosts);
+  const { name, email, avatar } = useSelector(getUserAuth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPosts());
+  }, []);
+
   return (
     <View style={styles.screenContainer}>
       <ScrollView>
         <View style={styles.container}>
-          <Image
-            source={require('../../assets/images/tempFoto/user.jpg')}
-            style={styles.image}
-          />
+          <Image source={{ uri: avatar }} style={styles.image} />
           <View>
-            <Text style={styles.name}>{user.userName}</Text>
-            <Text>{user.userEmail}</Text>
+            <Text style={styles.name}>{name}</Text>
+            <Text>{email}</Text>
           </View>
         </View>
-        {data.map(item => (
-          <View key={item.id} style={{ marginBottom: 32 }}>
+        {posts.map(item => (
+          <View key={item.postId} style={{ marginBottom: 32 }}>
             <PublicationItem data={item} />
           </View>
         ))}

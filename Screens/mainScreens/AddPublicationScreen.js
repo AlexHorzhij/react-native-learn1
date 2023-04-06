@@ -1,4 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUserAuth } from '../../redux/auth/authSelector';
+import { addPost } from '../../redux/posts/postsOperations';
+import { SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
 import {
   View,
   Text,
@@ -10,29 +14,23 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import { SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
 import {
   InputUnderlineIcon,
   SubmitButton,
   DeleteBottomButton,
 } from '../../components';
 
+import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 
-const postData = {
-  title: '',
-  comments: [],
-  likes: 0,
-  location: { latitude: 0, longitude: 0 },
-  image: '',
-  owner: '',
-};
-
-export default function AddPublicationScreen({ navigation, route }) {
+export default function AddPublicationScreen({ navigation }) {
+  const [image, setImage] = useState(null);
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
-  const [post, setPost] = useState(postData);
-  const [coord, setCoord] = useState(postData.location);
-  const foto = route.params?.foto ? route.params.foto : null;
+  const [coord, setCoord] = useState({ latitude: 0, longitude: 0 });
+  const [address, setAddress] = useState({});
+
+  const { uid } = useSelector(getUserAuth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -66,35 +64,58 @@ export default function AddPublicationScreen({ navigation, route }) {
   const getLocation = async () => {
     const { coords } = await Location.getCurrentPositionAsync();
     const location = { latitude: coords.latitude, longitude: coords.longitude };
-    console.log('location: ', location);
+
     setCoord(location);
     navigation.navigate('MapScreen', { location });
   };
 
-  const getAddressFromCoords = async coord => {
-    console.log('coord: ', coord);
-    const address = await Location.reverseGeocodeAsync(coord);
-    console.log('address: ', address);
+  const publishPost = () => {
+    const postData = {
+      title: address,
+      comments: [],
+      likes: 0,
+      location: coord,
+      image,
+      owner: uid,
+    };
+
+    dispatch(addPost(postData));
   };
 
-  useEffect(() => {
-    getAddressFromCoords(coord);
-  }, [coord]);
-  const publishPost = () => {};
+  const loadImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log('result', result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const saveFoto = foto => {
+    setImage(foto);
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.cameraContainer}>
-          <ImageBackground style={styles.image} source={{ uri: foto }}>
+          <ImageBackground style={styles.image} source={{ uri: image }}>
             <TouchableOpacity
               style={styles.makeFotoBtn}
-              onPress={() => navigation.navigate('CameraScreen')}
+              onPress={() => navigation.navigate('CameraScreen', { saveFoto })}
             >
               <FontAwesome name="camera" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           </ImageBackground>
-          <Text style={styles.cameraText}>Load foto</Text>
+          <TouchableOpacity onPress={loadImage}>
+            <Text style={styles.cameraText}>Load foto</Text>
+          </TouchableOpacity>
         </View>
 
         <View
@@ -108,14 +129,19 @@ export default function AddPublicationScreen({ navigation, route }) {
               placeholder="Title..."
               style={{ marginBottom: 16 }}
               onFocus={() => keyboardVisibleHandler(true)}
-              onChange={value =>
-                setPost(prev => {
-                  return { ...prev, title: value };
-                })
-              }
+              onChange={setAddress}
             />
             <InputUnderlineIcon
+              value={address}
               onIconPress={getLocation}
+              btnStyle={{
+                borderColor: '#BDBDBD',
+                borderWidth: 1,
+                borderRadius: 10,
+                padding: 5,
+                marginRight: 10,
+                // backgroundColor: '#E8E8E8',
+              }}
               icon={
                 <SimpleLineIcons
                   name="location-pin"
@@ -126,6 +152,7 @@ export default function AddPublicationScreen({ navigation, route }) {
               placeholder="Location..."
               style={{ marginBottom: 32 }}
               onFocus={() => keyboardVisibleHandler(true)}
+              onChange={setAddress}
             />
           </KeyboardAvoidingView>
           <SubmitButton text={'Publish'} onPress={publishPost} />

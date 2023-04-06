@@ -1,12 +1,26 @@
+import { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
+import { useSelector } from 'react-redux';
+import { getUserAuth } from '../../redux/auth/authSelector';
 import { Feather, SimpleLineIcons, AntDesign } from '@expo/vector-icons';
+import { getAddressFromCoords } from '../../services/getAddressFromCoords';
 
 export default function PublicationCard({ data }) {
+  const [address, setAddress] = useState(null);
+  const { uid } = useSelector(getUserAuth);
+  if (data.owner !== uid) return null;
+
+  (async () => {
+    const address = await getAddressFromCoords(data.location);
+    setAddress(address);
+  })();
+
+  console.log('data: ', data);
   const like = true;
   const comment = true;
   return (
     <View style={styles.container}>
-      <Image source={{ uri: data.url }} style={styles.image} />
+      <Image source={{ uri: data.image }} style={styles.image} />
       <Text style={styles.title}>{data.title}</Text>
       <View style={styles.links}>
         <View style={styles.feadbackContainer}>
@@ -21,10 +35,10 @@ export default function PublicationCard({ data }) {
           ) : (
             <AntDesign name="like2" size={24} color="#BDBDBD" />
           )}
-          <Text style={styles.commentsCount}>{data.like}</Text>
+          <Text style={styles.commentsCount}>{data.likes}</Text>
         </View>
         <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" />
-        <Text style={styles.location}>{data.location}</Text>
+        <Text style={styles.location}>{address}</Text>
       </View>
     </View>
   );

@@ -14,24 +14,6 @@ export const signUp = createAsyncThunk(
   }
 );
 
-// export const registerUser = createAsyncThunk(
-//   'register',
-//   async (data, { rejectWithValue }) => {
-//     try {
-//       const user = await register(data);
-//       toast.success('Successfully registered!');
-//       return user;
-//     } catch ({ response }) {
-//       const error = {
-//         status: response.status,
-//         message: response.data.message,
-//       };
-//       toast.error(`Oops! ${response.data.message}, please, try again`);
-//       return rejectWithValue(error);
-//     }
-//   }
-// );
-
 export const signIn = createAsyncThunk(
   'signIn',
   async (data, { rejectWithValue }) => {
@@ -50,9 +32,24 @@ export const signOut = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await API.userSignOut();
+      console.log('response: ', response);
       return response;
     } catch (error) {
       console.error(error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  'update',
+  async (data, { rejectWithValue }) => {
+    console.log('data: ', data);
+    try {
+      const response = API.updateUserData(data);
+      console.log('data: ', data);
+      return response;
+    } catch (error) {
       return rejectWithValue(error);
     }
   }

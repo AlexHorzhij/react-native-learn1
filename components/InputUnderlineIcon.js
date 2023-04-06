@@ -7,17 +7,22 @@ export default function InputUnderlineIcon({
   onFocus,
   onChange,
   onIconPress,
+  btnStyle,
+  value,
 }) {
   return (
     <View style={{ ...styles.inputContainer, ...style }}>
       {icon && (
-        <TouchableOpacity onPress={onIconPress}>{icon}</TouchableOpacity>
+        <TouchableOpacity onPress={onIconPress} style={btnStyle}>
+          {icon}
+        </TouchableOpacity>
       )}
       <TextInput
         placeholder={placeholder}
         style={styles.inputText}
         onFocus={onFocus}
         onChange={onChange}
+        value={value}
       />
     </View>
   );

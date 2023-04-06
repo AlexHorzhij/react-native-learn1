@@ -9,26 +9,19 @@ import {
   View,
   Alert,
 } from 'react-native';
-import API from '../../api/API';
 
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default function CameraScreen({ navigation }) {
+export default function CameraScreen({ navigation, route }) {
   const [type, setType] = useState(CameraType.back);
   const [permission, setPermission] = Camera.useCameraPermissions();
   const [camera, setCamera] = useState(null);
   const [foto, setFoto] = useState(null);
+  const getImage = route.params.saveFoto;
 
   const takeFoto = async () => {
     const foto = await camera.takePictureAsync();
     setFoto(foto.uri);
-  };
-
-  const saveFoto = async () => {
-    const res = await fetch(foto);
-    const file = await res.blob();
-    console.log(file);
-    API.saveInStorage(file);
   };
 
   useEffect(() => {
@@ -40,6 +33,12 @@ export default function CameraScreen({ navigation }) {
     })();
   }, []);
 
+  const toggleCamera = () => {
+    setType(prev =>
+      prev === CameraType.back ? CameraType.front : CameraType.back
+    );
+  };
+
   if (!permission) {
     return <View />;
   }
@@ -47,12 +46,6 @@ export default function CameraScreen({ navigation }) {
   if (!permission.granted) {
     return Alert(<Text>No access to camera</Text>);
   }
-
-  const toggleCamera = () => {
-    setType(prev =>
-      prev === CameraType.back ? CameraType.front : CameraType.back
-    );
-  };
 
   return (
     <Camera style={styles.camera} type={type} ref={setCamera}>
@@ -70,8 +63,8 @@ export default function CameraScreen({ navigation }) {
         <TouchableOpacity
           style={styles.publishBtn}
           onPress={() => {
-            navigation.navigate('AddPublicationScreen', { foto });
-            saveFoto();
+            navigation.navigate('AddPublicationScreen');
+            getImage(foto);
           }}
         >
           <Text style={styles.publishText}>SAVE</Text>
@@ -107,9 +100,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  // publishBtn: {
-  //   width,
-  // },
   publishText: {
     fontSize: 16,
     color: '#fff',
@@ -121,27 +111,22 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   button: {
-    // position: 'absolute',
     width: 70,
     height: 70,
     borderRadius: 50,
     backgroundColor: '#fff',
     alignItems: 'center',
-    // bottom: 50,
     alignSelf: 'center',
   },
   btnText: {
     color: '#fff',
   },
   toggleCameraBtn: {
-    // position: 'absolute',
     width: 70,
     height: 70,
-    // right: 20,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    // bottom: 50,
     alignSelf: 'flex-end',
     marginRight: 10,
   },

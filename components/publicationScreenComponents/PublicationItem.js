@@ -1,16 +1,25 @@
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { Feather, SimpleLineIcons } from '@expo/vector-icons';
+import { getAddressFromCoords } from '../../services/getAddressFromCoords';
+import { useState } from 'react';
 
 export default function PublicationItem({ data }) {
+  const [address, setAddress] = useState(null);
+
+  (async () => {
+    const address = await getAddressFromCoords(data.location);
+    setAddress(address);
+  })();
+
   return (
     <View style={styles.container}>
-      <Image source={data.image} style={styles.image} />
+      <Image source={{ uri: data.image }} style={styles.image} />
       <Text style={styles.title}>{data.title}</Text>
       <View style={styles.links}>
         <Feather name="message-circle" size={24} color="#BDBDBD" />
-        <Text style={styles.commentsCount}>{data.commentsCount}</Text>
+        <Text style={styles.commentsCount}>{data.comments.length}</Text>
         <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" />
-        <Text style={styles.location}>{data.location}</Text>
+        <Text style={styles.location}>{address ? address : 'Somewhere'}</Text>
       </View>
     </View>
   );

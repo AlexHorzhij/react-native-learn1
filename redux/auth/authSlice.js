@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signUp, signIn, signOut } from './authOperations';
+import { signUp, signIn, signOut, updateUser } from './authOperations';
 
 const initialState = {
   name: null,
@@ -8,6 +8,7 @@ const initialState = {
   token: null,
   error: null,
   uid: null,
+  avatar: null,
 };
 
 export const authSlice = createSlice({
@@ -18,6 +19,7 @@ export const authSlice = createSlice({
       state.uid = payload.uid;
       state.email = payload.email;
       state.name = payload.displayName;
+      state.avatar = payload.photoURL;
     },
   },
   extraReducers: builder => {
@@ -50,12 +52,27 @@ export const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(signOut.fulfilled, state => {
+        console.log('state: ', state);
         state.isLoading = false;
         state.uid = null;
         state.email = null;
         state.name = null;
       })
       .addCase(signOut.rejected, state => {
+        state.error = true;
+      })
+      .addCase(updateUser.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        console.log('state: ', state);
+        state.isLoading = false;
+        state.uid = payload.uid;
+        state.email = payload.email;
+        state.name = payload.name;
+        state.avatar = payload.photoURL;
+      })
+      .addCase(updateUser.rejected, state => {
         state.error = true;
       });
   },

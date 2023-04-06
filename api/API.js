@@ -6,13 +6,17 @@ import {
   signOut,
   updateProfile,
 } from 'firebase/auth';
-
-// import { refreshUser } from '../redux/auth/authSlice';
-
 import { ref, uploadBytes } from 'firebase/storage';
-import { auth, storage } from '../fireBase/firebaseConfig';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
+
+// import { ref:refDb, set } from 'firebase/database';
+import { auth, storage, db } from '../fireBase/firebaseConfig';
+
+const DEFAULT_AVATAR =
+  'https://firebasestorage.googleapis.com/v0/b/react-native-learn1-3adc9.appspot.com/o/image%2Favatars%2Fblank-profile-default.png?alt=media&token=c83f14f3-10a4-47e8-880e-0317e139a8c0';
 
 export default {
+  // ============= Auth ==========================
   async userSignUp({ name, email, password }) {
     try {
       const { user } = await createUserWithEmailAndPassword(
@@ -23,9 +27,11 @@ export default {
 
       await updateProfile(auth.currentUser, {
         displayName: name,
+        photoURL: DEFAULT_AVATAR,
       });
 
       const data = await auth.currentUser;
+      console.log(data);
       let userData = {};
       if (user) {
         const { displayName, email, uid } = user;
@@ -59,18 +65,48 @@ export default {
       console.log(error);
     }
   },
-  // async authRefresh(dispatch) {
-  //   const foo = await onAuthStateChanged(auth, user => {
-  //     console.log('user: ', user);
-  //     if (user) {
-  //       const { displayName, email, accessToken, uid } = user;
-  //       const userData = { displayName, email, accessToken, uid };
-  //       dispatch(refreshUser(userData));
-  //     } else {
-  //       console.log('user is logout');
-  //     }
-  //   });
-  // },
+  async updateUserData(data) {
+    await updateProfile(auth.currentUser, {
+      photoURL: data.photoURL ? data.photoURL : DEFAULT_AVATAR,
+    });
+
+    const user = auth.currentUser;
+
+    const { displayName, email, uid, photoURL } = user;
+    return { displayName, email, uid, photoURL };
+  },
+  // ===================== Posts ====================
+  async uploadPostAtServer(data) {
+    console.log('data123: ', data);
+    console.log('db: ', db);
+    try {
+      await addDoc(collection(db, 'posts'), data);
+      const querySnapshot = await getDocs(collection(db, 'posts'));
+      console.log('Document written with ID: ', querySnapshot);
+      const posts = [];
+      querySnapshot.forEach(doc => {
+        const postItem = { ...doc.data(), postId: doc.id };
+        posts.push(postItem);
+        console.log(posts);
+        // console.log(`${doc.id} => ${doc.data()}`);
+      });
+      return posts;
+    } catch (e) {
+      console.error('Error adding document: ', e);
+    }
+  },
+  async getAllPosts() {
+    const querySnapshot = await getDocs(collection(db, 'posts'));
+    // console.log('Document written with ID: ', querySnapshot);
+    const posts = [];
+    querySnapshot.forEach(doc => {
+      const postItem = { ...doc.data(), postId: doc.id };
+      posts.push(postItem);
+      // console.log(`${doc.id} => ${doc.data()}`);
+    });
+    console.log(posts);
+    return posts;
+  },
   async saveInStorage(file) {
     const name = v4();
     const storageRef = ref(storage, `image/${name}`);

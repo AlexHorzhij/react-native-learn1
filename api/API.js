@@ -7,7 +7,8 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { ref, uploadBytes } from 'firebase/storage';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, getDoc } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 
 // import { ref:refDb, set } from 'firebase/database';
 import { auth, storage, db } from '../fireBase/firebaseConfig';
@@ -97,20 +98,54 @@ export default {
   },
   async getAllPosts() {
     const querySnapshot = await getDocs(collection(db, 'posts'));
-    // console.log('Document written with ID: ', querySnapshot);
     const posts = [];
     querySnapshot.forEach(doc => {
       const postItem = { ...doc.data(), postId: doc.id };
       posts.push(postItem);
-      // console.log(`${doc.id} => ${doc.data()}`);
     });
-    console.log(posts);
+    console.log('posts: ', posts);
     return posts;
   },
   async saveInStorage(file) {
+    console.log('file: ', file);
     const name = v4();
     const storageRef = ref(storage, `image/${name}`);
 
     const foto = await uploadBytes(storageRef, file);
+  },
+  async updateLikePost({ userId, postId, liked }) {
+    console.log('userId, postId, liked111: ', userId, postId, liked);
+    const postRef = doc(db, 'posts', postId);
+
+    try {
+      if (liked) {
+        await updateDoc(postRef, {
+          likes: arrayUnion(userId),
+        });
+      } else {
+        await updateDoc(postRef, {
+          likes: arrayRemove(userId),
+        });
+      }
+      const docSnap = await getDoc(postRef);
+
+      if (docSnap.exists()) {
+        const res = docSnap.data();
+        return { likes: res.likes, postId, userId };
+      } else {
+        console.log('No such document!');
+        return null;
+      }
+
+      // const querySnapshot = await getDocs(collection(db, 'posts'));
+      // const posts = [];
+      // querySnapshot.forEach(doc => {
+      //   const postItem = { ...doc.data(), postId: doc.id };
+      //   posts.push(postItem);
+      // });
+      // return posts;
+    } catch (error) {
+      console.log('error: ', error);
+    }
   },
 };

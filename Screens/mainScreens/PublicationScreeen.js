@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserAuth } from '../../redux/auth/authSelector';
-import PublicationItem from '../../components/publicationScreenComponents/PublicationItem';
+import PublicationCard from '../../components/postComponents/PublicationCard';
 // import image from '../../assets/images/tempFoto/forest.jpg';
 import { getAllPosts } from '../../redux/posts/postsSelector';
 import { getPosts } from '../../redux/posts/postsOperations';
@@ -44,11 +44,12 @@ export default function PublicationScreeen() {
             <Text>{email}</Text>
           </View>
         </View>
-        {posts.map(item => (
-          <View key={item.postId} style={{ marginBottom: 32 }}>
-            <PublicationItem data={item} />
-          </View>
-        ))}
+        {posts &&
+          posts.map(item => (
+            <View key={item.postId} style={{ marginBottom: 32 }}>
+              <PublicationCard data={item} />
+            </View>
+          ))}
       </ScrollView>
     </View>
   );
@@ -57,13 +58,14 @@ export default function PublicationScreeen() {
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
+    paddingHorizontal: 16,
     backgroundColor: '#fff',
   },
   container: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
     marginVertical: 20,
   },
   image: {

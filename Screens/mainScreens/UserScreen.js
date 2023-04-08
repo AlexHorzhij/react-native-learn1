@@ -16,8 +16,7 @@ import { getAllPosts } from '../../redux/posts/postsSelector';
 import { updateUser } from '../../redux/auth/authOperations';
 
 import { ScrollView } from 'react-native-gesture-handler';
-import PublicationCard from '../../components/userScreenComponents/PublicationCard';
-// import gallery from '../../assets/dataBase/gallery';
+import PublicationCard from '../../components/postComponents/PublicationCard';
 import { useLogout } from '../../services/hooks/useLogout';
 import * as ImagePicker from 'expo-image-picker';
 

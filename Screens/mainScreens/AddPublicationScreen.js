@@ -19,6 +19,7 @@ import {
   SubmitButton,
   DeleteBottomButton,
 } from '../../components';
+import { getAddressFromCoords } from '../../services/getAddressFromCoords';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
@@ -28,6 +29,7 @@ export default function AddPublicationScreen({ navigation }) {
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
   const [coord, setCoord] = useState({ latitude: 0, longitude: 0 });
   const [address, setAddress] = useState({});
+  const [title, setTitle] = useState('');
 
   const { uid } = useSelector(getUserAuth);
   const dispatch = useDispatch();
@@ -61,25 +63,32 @@ export default function AddPublicationScreen({ navigation }) {
     }
   };
 
+  const choosePlace = async coords => {
+    const place = await getAddressFromCoords(coords);
+    setAddress(place);
+    // navigation.navigate('AddPublicationScreen');
+  };
+
   const getLocation = async () => {
     const { coords } = await Location.getCurrentPositionAsync();
     const location = { latitude: coords.latitude, longitude: coords.longitude };
 
     setCoord(location);
-    navigation.navigate('MapScreen', { location });
+    navigation.navigate('MapScreen', { location, choosePlace });
   };
 
   const publishPost = () => {
     const postData = {
-      title: address,
+      title: title,
       comments: [],
-      likes: 0,
+      likes: [],
       location: coord,
       image,
       owner: uid,
     };
 
     dispatch(addPost(postData));
+    navigation.navigate('Publications');
   };
 
   const loadImage = async () => {
@@ -129,7 +138,7 @@ export default function AddPublicationScreen({ navigation }) {
               placeholder="Title..."
               style={{ marginBottom: 16 }}
               onFocus={() => keyboardVisibleHandler(true)}
-              onChange={setAddress}
+              onChange={setTitle}
             />
             <InputUnderlineIcon
               value={address}

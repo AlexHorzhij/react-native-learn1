@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
-export default function MapScreen({ route }) {
-  const { location } = route.params;
+export default function MapScreen({ navigation, route }) {
+  const { location, choosePlace } = route.params;
   const [coords, setCoords] = useState(location);
 
-  const choosePlace = () => {
+  const chooseCurrentPlace = async () => {
+    await choosePlace(coords);
+    // navigation.navigate('AddPublicationScreen');
     console.log(coords);
   };
 
@@ -21,7 +23,7 @@ export default function MapScreen({ route }) {
       >
         <Marker coordinate={coords} />
       </MapView>
-      <TouchableOpacity style={styles.btn} onPress={choosePlace}>
+      <TouchableOpacity style={styles.btn} onPress={chooseCurrentPlace}>
         <Text style={styles.btnText}>I AM HEAR</Text>
       </TouchableOpacity>
     </View>

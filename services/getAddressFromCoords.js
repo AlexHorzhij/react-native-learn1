@@ -5,9 +5,5 @@ export const getAddressFromCoords = async coords => {
   if (data.length === 0) {
     return null;
   }
-  console.log(
-    '`${data[0].region}, ${data[0].country}`: ',
-    `${data[0].region}, ${data[0].country}`
-  );
   return `${data[0].region}, ${data[0].country}`;
 };

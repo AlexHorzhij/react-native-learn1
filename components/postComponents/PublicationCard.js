@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import { getUserAuth } from '../../redux/auth/authSelector';
-import { Feather, SimpleLineIcons, AntDesign } from '@expo/vector-icons';
+import { SimpleLineIcons, AntDesign } from '@expo/vector-icons';
 import { getAddressFromCoords } from '../../services/getAddressFromCoords';
+import { Comments, Likes } from './index';
 
 export default function PublicationCard({ data }) {
   const [address, setAddress] = useState(null);
@@ -24,18 +25,8 @@ export default function PublicationCard({ data }) {
       <Text style={styles.title}>{data.title}</Text>
       <View style={styles.links}>
         <View style={styles.feadbackContainer}>
-          <Feather
-            name="message-circle"
-            size={24}
-            color={data.comments.length > 0 ? '#FF6C00' : '#BDBDBD'}
-          />
-          <Text style={styles.commentsCount}>{data.comments.length}</Text>
-          {like ? (
-            <AntDesign name="like1" size={24} color="#FF6C00" />
-          ) : (
-            <AntDesign name="like2" size={24} color="#BDBDBD" />
-          )}
-          <Text style={styles.commentsCount}>{data.likes}</Text>
+          <Comments comments={data.comments} />
+          <Likes data={data} uid={uid} />
         </View>
         <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" />
         <Text style={styles.location}>{address}</Text>
@@ -74,14 +65,7 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     alignItems: 'center',
   },
-  commentsCount: {
-    color: '#212121',
-    marginLeft: 8,
-    marginRight: 24,
-    fontWeight: '400',
-    fontSize: 16,
-    lineHeight: 19,
-  },
+
   location: {
     marginLeft: 3,
     fontWeight: '400',

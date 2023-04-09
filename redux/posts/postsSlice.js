@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addPost, getPosts, likePost } from './postsOperations';
+import { addPost, getPosts, likePost, publishComment } from './postsOperations';
 const initialState = {
   //   post: {
   //     comments: [],
@@ -60,16 +60,21 @@ export const postsSlice = createSlice({
           state.posts[index].likes = payload.likes;
           state.posts[index].status = payload.status;
         }
-        // console.log('index: ', index);
-        // console.log('state.posts[index]: ', state.posts[index]);
-        // state.posts.map(item => {
-        //   item.postId === payload.postId
-        //     ? (item.status = payload.status)
-        //     : item;
-        //   item.likes = payload.likes;
-        // });
       })
       .addCase(likePost.rejected, state => {
+        state.error = true;
+      })
+      .addCase(publishComment.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(publishComment.fulfilled, (state, { payload }) => {
+        console.log('payload: ', payload);
+        const index = state.posts.findIndex(
+          item => item.postId === payload.postId
+        );
+        state.posts[index].comments = [...payload.comments];
+      })
+      .addCase(publishComment.rejected, state => {
         state.error = true;
       });
   },

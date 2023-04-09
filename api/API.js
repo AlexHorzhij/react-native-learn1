@@ -114,7 +114,6 @@ export default {
     const foto = await uploadBytes(storageRef, file);
   },
   async updateLikePost({ userId, postId, liked }) {
-    console.log('userId, postId, liked111: ', userId, postId, liked);
     const postRef = doc(db, 'posts', postId);
 
     try {
@@ -136,14 +135,24 @@ export default {
         console.log('No such document!');
         return null;
       }
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  },
+  async addComment({ data, postId }) {
+    const postRef = doc(db, 'posts', postId);
 
-      // const querySnapshot = await getDocs(collection(db, 'posts'));
-      // const posts = [];
-      // querySnapshot.forEach(doc => {
-      //   const postItem = { ...doc.data(), postId: doc.id };
-      //   posts.push(postItem);
-      // });
-      // return posts;
+    try {
+      await updateDoc(postRef, { comments: arrayUnion(data) });
+
+      const docSnap = await getDoc(postRef);
+      if (docSnap.exists()) {
+        const res = docSnap.data();
+        return { comments: res.comments, postId };
+      } else {
+        console.log('No such document!');
+        return null;
+      }
     } catch (error) {
       console.log('error: ', error);
     }

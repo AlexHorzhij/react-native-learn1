@@ -45,3 +45,15 @@ export const likePost = createAsyncThunk(
     }
   }
 );
+
+export const publishComment = createAsyncThunk(
+  'publishComment',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await API.addComment(data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);

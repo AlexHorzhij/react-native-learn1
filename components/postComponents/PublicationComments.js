@@ -1,7 +1,10 @@
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 const Comments = ({ comments }) => {
+  // const readComments = () => {
+  //   console.log('readComments');
+  // };
   return (
     <>
       <Feather

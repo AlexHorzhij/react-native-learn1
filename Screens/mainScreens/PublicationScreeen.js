@@ -25,7 +25,7 @@ import { getPosts } from '../../redux/posts/postsOperations';
 //   },
 // ];
 
-export default function PublicationScreeen() {
+export default function PublicationScreeen({ navigation }) {
   const { posts } = useSelector(getAllPosts);
   const { name, email, avatar } = useSelector(getUserAuth);
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ export default function PublicationScreeen() {
         {posts &&
           posts.map(item => (
             <View key={item.postId} style={{ marginBottom: 32 }}>
-              <PublicationCard data={item} />
+              <PublicationCard data={item} navigation={navigation} />
             </View>
           ))}
       </ScrollView>

@@ -6,8 +6,9 @@ import {
   CameraScreen,
   FotoPreview,
   MapScreen,
+  CommentsScreen,
 } from '../Screens/mainScreens';
-import { TouchableOpacity, TouchableOpacityComponent } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 const MainStack = createNativeStackNavigator();
 
@@ -50,6 +51,13 @@ export const Main = () => {
         component={FotoPreview}
         options={{
           title: 'FotoPreview',
+        }}
+      />
+      <MainStack.Screen
+        name="CommentsScreen"
+        component={CommentsScreen}
+        options={{
+          title: 'Comments',
         }}
       />
     </MainStack.Navigator>

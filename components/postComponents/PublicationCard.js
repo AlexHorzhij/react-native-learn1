@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { getUserAuth } from '../../redux/auth/authSelector';
 import { SimpleLineIcons, AntDesign } from '@expo/vector-icons';
 import { getAddressFromCoords } from '../../services/getAddressFromCoords';
-import { Comments, Likes } from './index';
+import Comments from './PublicationComments';
+import Likes from './PublicationLikes';
 
-export default function PublicationCard({ data }) {
+export default function PublicationCard({ data, navigation }) {
   const [address, setAddress] = useState(null);
   const { uid } = useSelector(getUserAuth);
   if (data.owner !== uid) return null;
@@ -16,16 +17,22 @@ export default function PublicationCard({ data }) {
     setAddress(address);
   })();
 
-  console.log('data: ', data);
-  const like = true;
-  const comment = true;
+  const { comments, image, postId } = data;
+  console.log('comments: ', comments);
   return (
     <View style={styles.container}>
       <Image source={{ uri: data.image }} style={styles.image} />
       <Text style={styles.title}>{data.title}</Text>
       <View style={styles.links}>
         <View style={styles.feadbackContainer}>
-          <Comments comments={data.comments} />
+          <TouchableOpacity
+            style={styles.commentsBtn}
+            onPress={() =>
+              navigation.navigate('CommentsScreen', { comments, image, postId })
+            }
+          >
+            <Comments comments={data.comments} />
+          </TouchableOpacity>
           <Likes data={data} uid={uid} />
         </View>
         <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" />
@@ -39,7 +46,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: 300,
-    marginBottom: 32,
   },
 
   image: {
@@ -65,7 +71,10 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     alignItems: 'center',
   },
-
+  commentsBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   location: {
     marginLeft: 3,
     fontWeight: '400',

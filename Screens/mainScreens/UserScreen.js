@@ -37,7 +37,7 @@ import * as ImagePicker from 'expo-image-picker';
 //   },
 // ];
 
-export default function UserScreen() {
+export default function UserScreen({ navigation }) {
   const logout = useLogout();
   const { name, avatar } = useSelector(getUserAuth);
   const { posts } = useSelector(getAllPosts);
@@ -98,8 +98,8 @@ export default function UserScreen() {
             </TouchableOpacity>
             <Text style={styles.name}>{name}</Text>
             {posts.map(item => (
-              <View key={item.id} style={{ width: '100%' }}>
-                <PublicationCard data={item} />
+              <View key={item.id} style={{ width: '100%', marginBottom: 32 }}>
+                <PublicationCard data={item} navigation={navigation} />
               </View>
             ))}
           </View>

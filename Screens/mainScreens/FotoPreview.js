@@ -1,7 +1,6 @@
 import { StyleSheet, ImageBackground, View } from 'react-native';
 
 export default function FotoPreview({ route }) {
-  console.log('route', route);
   if (!route) return null;
   return (
     <View style={styles.container}>

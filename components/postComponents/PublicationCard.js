@@ -18,13 +18,13 @@ export default function PublicationCard({ data, navigation }) {
   })();
 
   const { comments, image, postId } = data;
-  console.log('comments: ', comments);
+
   return (
     <View style={styles.container}>
       <Image source={{ uri: data.image }} style={styles.image} />
       <Text style={styles.title}>{data.title}</Text>
       <View style={styles.links}>
-        <View style={styles.feadbackContainer}>
+        <View style={styles.feedbackContainer}>
           <TouchableOpacity
             style={styles.commentsBtn}
             onPress={() =>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     flexDirection: 'row',
   },
-  feadbackContainer: {
+  feedbackContainer: {
     flexDirection: 'row',
     marginRight: 'auto',
     alignItems: 'center',

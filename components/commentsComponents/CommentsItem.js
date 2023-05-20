@@ -18,8 +18,6 @@ export default CommentsItem;
 
 const styles = StyleSheet.create({
   container: {
-    // width: '100%',
-    // marginHorizontal: 16,
     flexDirection: 'row',
   },
   avatarContainer: {
@@ -32,7 +30,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flexGrow: 1,
-    // width: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
     borderRadius: 6,
     borderTopLeftRadius: 0,

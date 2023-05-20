@@ -52,7 +52,6 @@ export const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(signOut.fulfilled, state => {
-        console.log('state: ', state);
         state.isLoading = false;
         state.uid = null;
         state.email = null;
@@ -65,7 +64,6 @@ export const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(updateUser.fulfilled, (state, { payload }) => {
-        console.log('state: ', state);
         state.isLoading = false;
         state.uid = payload.uid;
         state.email = payload.email;

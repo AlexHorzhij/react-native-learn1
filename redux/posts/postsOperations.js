@@ -6,7 +6,6 @@ export const addPost = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await API.uploadPostAtServer(data);
-      console.log('response: ', response);
       return response;
     } catch (error) {
       return rejectWithValue(error);
@@ -37,8 +36,6 @@ export const likePost = createAsyncThunk(
     try {
       const { likes, postId, userId } = await API.updateLikePost(data);
       const status = likes.includes(userId);
-      console.log('status: ', status);
-
       return { status, postId, likes };
     } catch (error) {
       return rejectWithValue(error);

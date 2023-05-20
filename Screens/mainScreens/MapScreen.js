@@ -8,8 +8,6 @@ export default function MapScreen({ navigation, route }) {
 
   const chooseCurrentPlace = async () => {
     await choosePlace(coords);
-    // navigation.navigate('AddPublicationScreen');
-    console.log(coords);
   };
 
   return (

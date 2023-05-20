@@ -66,7 +66,6 @@ export default function AddPublicationScreen({ navigation }) {
   const choosePlace = async coords => {
     const place = await getAddressFromCoords(coords);
     setAddress(place);
-    // navigation.navigate('AddPublicationScreen');
   };
 
   const getLocation = async () => {
@@ -98,8 +97,6 @@ export default function AddPublicationScreen({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log('result', result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -149,7 +146,6 @@ export default function AddPublicationScreen({ navigation }) {
                 borderRadius: 10,
                 padding: 5,
                 marginRight: 10,
-                // backgroundColor: '#E8E8E8',
               }}
               icon={
                 <SimpleLineIcons

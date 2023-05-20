@@ -1,14 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { addPost, getPosts, likePost, publishComment } from './postsOperations';
 const initialState = {
-  //   post: {
-  //     comments: [],
-  //     image: '',
-  //     likes: [],
-  //     location: { longitude: 0, latitude: 0 },
-  //     owner: '',
-  //     title: '',
-  //   },
   posts: [],
   isLoading: false,
   error: false,
@@ -68,7 +60,6 @@ export const postsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(publishComment.fulfilled, (state, { payload }) => {
-        console.log('payload: ', payload);
         const index = state.posts.findIndex(
           item => item.postId === payload.postId
         );

@@ -1,29 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserAuth } from '../../redux/auth/authSelector';
 import PublicationCard from '../../components/postComponents/PublicationCard';
-// import image from '../../assets/images/tempFoto/forest.jpg';
 import { getAllPosts } from '../../redux/posts/postsSelector';
 import { getPosts } from '../../redux/posts/postsOperations';
-
-// const user = '../../assets/images/tempFoto/user.jpg';
-// const data = [
-//   {
-//     id: '1',
-//     title: 'Forest',
-//     commentsCount: 0,
-//     location: "Ivano-Frankivs'k Region, Ukraine",
-//     image,
-//   },
-//   {
-//     id: '2',
-//     title: 'Forest',
-//     commentsCount: 0,
-//     location: "Ivano-Frankivs'k Region, Ukraine",
-//     image,
-//   },
-// ];
 
 export default function PublicationScreeen({ navigation }) {
   const { posts } = useSelector(getAllPosts);
@@ -65,7 +46,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    // marginHorizontal: 16,
     marginVertical: 20,
   },
   image: {

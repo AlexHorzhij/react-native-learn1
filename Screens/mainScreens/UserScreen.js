@@ -20,23 +20,6 @@ import PublicationCard from '../../components/postComponents/PublicationCard';
 import { useLogout } from '../../services/hooks/useLogout';
 import * as ImagePicker from 'expo-image-picker';
 
-// const data = [
-//   {
-//     id: '1',
-//     title: 'Forest',
-//     commentsCount: 0,
-//     location: "Ivano-Frankivs'k Region, Ukraine",
-//     image: '../../assets/images/tempFoto/forest.jpg',
-//   },
-//   {
-//     id: '2',
-//     title: 'Forest',
-//     commentsCount: 0,
-//     location: "Ivano-Frankivs'k Region, Ukraine",
-//     image: '../../assets/images/tempFoto/forest.jpg',
-//   },
-// ];
-
 export default function UserScreen({ navigation }) {
   const logout = useLogout();
   const { name, avatar } = useSelector(getUserAuth);
@@ -67,7 +50,6 @@ export default function UserScreen({ navigation }) {
 
     if (!result.canceled) {
       const image = result.assets[0].uri;
-      console.log('image: ', image);
       dispatch(updateUser({ photoURL: image }));
     }
   };

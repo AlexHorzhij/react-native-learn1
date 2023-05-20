@@ -32,7 +32,6 @@ export const signOut = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await API.userSignOut();
-      console.log('response: ', response);
       return response;
     } catch (error) {
       console.error(error);
@@ -44,10 +43,8 @@ export const signOut = createAsyncThunk(
 export const updateUser = createAsyncThunk(
   'update',
   async (data, { rejectWithValue }) => {
-    console.log('data: ', data);
     try {
       const response = API.updateUserData(data);
-      console.log('data: ', data);
       return response;
     } catch (error) {
       return rejectWithValue(error);
